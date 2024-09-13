@@ -1,0 +1,37 @@
+Dim ws1 As Worksheet
+Dim ws2 As Worksheet
+
+Private Sub Workbook_Open()
+    ' Definir as planilhas e guias
+    Set ws1 = ThisWorkbook.Sheets("fluxo de caixa - diario").Sheets("Setembro 2024")
+    Set ws2 = ThisWorkbook.Sheets("Fluxo de Caixa-Setembro- Revisado - Copia").Sheets("RESUMO")
+End Sub
+
+Private Sub Worksheet_Change(ByVal Target As Range)
+    ' Desativar eventos para evitar chamadas recursivas
+    Application.EnableEvents = False
+    
+    ' Verificar se a alteração na célula da planilha "fluxo de caixa - diario"
+    ' Dia 04
+    If Not Intersect(Target, ws1.Range("G53")) Is Nothing Then
+        ws2.Range("E133").Value = ws1.Range("G53").Value
+        Application.EnableEvents = True
+    End If
+    
+    'Dia 05
+    If Not Intersect(Target, ws1.Range("G72")) Is Nothing Then
+        ws2.Range("F133").Value = ws1.Range("G72").Value
+        Application.EnableEvents = True
+    End If
+    
+    'Dia 06
+        If Not Intersect(Target, ws1.Range("G91")) Is Nothing Then
+        ws2.Range("G133").Value = ws1.Range("G91").Value
+        Application.EnableEvents = True
+    End If
+    
+    
+    ' Reativar eventos
+    Application.EnableEvents = True
+    
+End Sub
