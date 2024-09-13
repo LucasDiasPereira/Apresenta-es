@@ -28,13 +28,32 @@ $slides = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apresentação sobre Vexpensse</title>
+    <title>Apresentação VExpensses</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
         }
         .presentation {
             width: 80%;
@@ -44,10 +63,14 @@ $slides = [
             padding: 20px;
         }
         .slide {
+            display: none;
             margin-bottom: 20px;
             padding: 20px;
             background: #e0e0e0;
             border-radius: 8px;
+        }
+        .active {
+            display: block;
         }
         .slide h2 {
             margin-top: 0;
@@ -56,6 +79,19 @@ $slides = [
         .slide p {
             margin: 0;
             line-height: 1.6;
+        }
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .controls button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         @media (max-width: 768px) {
             .presentation {
@@ -66,13 +102,53 @@ $slides = [
     </style>
 </head>
 <body>
-    <div class="presentation">
-        <?php foreach ($slides as $slide): ?>
-            <div class="slide">
-                <h2><?php echo htmlspecialchars($slide['title']); ?></h2>
-                <p><?php echo nl2br(htmlspecialchars($slide['content'])); ?></p>
-            </div>
-        <?php endforeach; ?>
-    </div>
+
+<!-- Navegação -->
+<nav>
+    <ul>
+        <li><a href="#intro">Introdução</a></li>
+        <li><a href="#features">Funcionalidades</a></li>
+        <li><a href="#benefits">Benefícios</a></li>
+        <li><a href="#implementation">Implementação</a></li>
+        <li><a href="#conclusion">Conclusão</a></li>
+    </ul>
+</nav>
+
+<!-- Apresentação -->
+<div class="presentation">
+    <?php foreach ($slides as $index => $slide): ?>
+        <div class="slide <?php echo $index === 0 ? 'active' : ''; ?>" id="slide-<?php echo $index; ?>">
+            <h2><?php echo htmlspecialchars($slide['title']); ?></h2>
+            <p><?php echo nl2br(htmlspecialchars($slide['content'])); ?></p>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+<!-- Controles de Navegação -->
+<div class="controls">
+    <button id="prev">Anterior</button>
+    <button id="next">Próximo</button>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[index].classList.add('active');
+    }
+
+    document.getElementById('next').addEventListener('click', () => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    });
+
+    document.getElementById('prev').addEventListener('click', () => {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    });
+</script>
+
 </body>
 </html>
